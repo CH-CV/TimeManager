@@ -4,6 +4,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'app/app.dart';
 import 'features/task/data/models/task_model.dart';
 import 'features/pomodoro/data/models/pomodoro_record.dart';
+import 'services/notification_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -12,6 +13,8 @@ void main() async {
 
   Hive.registerAdapter(TaskModelAdapter());
   Hive.registerAdapter(PomodoroRecordAdapter());
+
+  await NotificationService().init();
 
   runApp(const ProviderScope(child: TimewiseApp()));
 }

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive/hive.dart';
 import 'package:uuid/uuid.dart';
+import '../../../../services/notification_service.dart';
 import '../../data/models/pomodoro_record.dart';
 
 class PomodoroState {
@@ -88,8 +89,33 @@ class PomodoroNotifier extends StateNotifier<PomodoroState> {
     _moveToNext();
   }
 
-  void _onTimerComplete() {
+  Future<void> _onTimerComplete() async {
     _timer?.cancel();
+
+    if (state.currentType == PomodoroType.work && state.currentRecord != null) {
+      final box = await Hive.openBox<PomodoroRecord>('pomodoro_records');
+      final completedRecord = PomodoroRecord(
+        id: state.currentRecord!.id,
+        startTime: state.currentRecord!.startTime,
+        endTime: DateTime.now(),
+        typeIndex: state.currentRecord!.typeIndex,
+        taskId: state.currentRecord!.taskId,
+      );
+      await box.put(completedRecord.id, completedRecord);
+
+      await NotificationService().showPomodoroNotification(
+        title: '🍅 番茄完成',
+        body: '恭喜完成一个番茄钟！',
+      );
+    } else {
+      final typeLabel = state.currentType == PomodoroType.shortBreak
+          ? '短'
+          : '长';
+      await NotificationService().showPomodoroNotification(
+        title: '☕ $typeLabel休息结束',
+        body: '休息结束，开始下一个番茄钟吧！',
+      );
+    }
 
     if (state.currentType == PomodoroType.work) {
       state = state.copyWith(completedPomodoros: state.completedPomodoros + 1);

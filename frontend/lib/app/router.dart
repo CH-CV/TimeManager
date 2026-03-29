@@ -5,6 +5,7 @@ import '../features/task/presentation/pages/task_list_page.dart';
 import '../features/task/presentation/pages/task_detail_page.dart';
 import '../features/task/presentation/pages/task_create_page.dart';
 import '../features/pomodoro/presentation/pages/pomodoro_page.dart';
+import '../features/pomodoro/presentation/pages/pomodoro_history_page.dart';
 import '../features/timeline/presentation/pages/timeline_page.dart';
 import '../features/statistics/presentation/pages/statistics_page.dart';
 import '../features/ai/presentation/pages/ai_assistant_page.dart';
@@ -36,6 +37,13 @@ final routerProvider = Provider<GoRouter>((ref) {
             path: '/pomodoro',
             pageBuilder: (context, state) =>
                 const NoTransitionPage(child: PomodoroPage()),
+            routes: [
+              GoRoute(
+                path: 'history',
+                parentNavigatorKey: _rootNavigatorKey,
+                builder: (context, state) => const PomodoroHistoryPage(),
+              ),
+            ],
           ),
           GoRoute(
             path: '/statistics',

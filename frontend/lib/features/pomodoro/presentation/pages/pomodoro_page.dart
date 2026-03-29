@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import '../providers/pomodoro_providers.dart';
 import '../../data/models/pomodoro_record.dart';
 
@@ -14,6 +15,10 @@ class PomodoroPage extends ConsumerWidget {
       appBar: AppBar(
         title: const Text('番茄钟'),
         actions: [
+          IconButton(
+            icon: const Icon(Icons.history),
+            onPressed: () => context.push('/pomodoro/history'),
+          ),
           IconButton(
             icon: const Icon(Icons.refresh),
             onPressed: () => ref.read(pomodoroProvider.notifier).reset(),

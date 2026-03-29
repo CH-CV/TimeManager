@@ -3,7 +3,9 @@ import '../models/task_model.dart';
 
 class TaskRepository {
   static const String _boxName = 'tasks';
+  static const String _categoriesBoxName = 'categories';
   Box<TaskModel>? _box;
+  Box<String>? _categoriesBox;
   bool _isInitialized = false;
 
   bool get isInitialized => _isInitialized;
@@ -11,6 +13,7 @@ class TaskRepository {
   Future<void> init() async {
     if (_isInitialized) return;
     _box = await Hive.openBox<TaskModel>(_boxName);
+    _categoriesBox = await Hive.openBox<String>(_categoriesBoxName);
     _isInitialized = true;
   }
 
@@ -62,15 +65,15 @@ class TaskRepository {
   }
 
   List<String> getAllCategories() {
-    if (_box == null) return [];
-    final categories = _box!.values
-        .map((t) => t.category)
-        .where((c) => c != null && c.isNotEmpty)
-        .cast<String>()
-        .toSet()
-        .toList();
-    return categories;
+    if (_categoriesBox == null) return [];
+    return _categoriesBox!.values.toList();
   }
 
-  Future<void> addCategory(String category) async {}
+  Future<void> addCategory(String category) async {
+    if (_categoriesBox == null) return;
+    if (category.isEmpty) return;
+    // Check if already exists
+    if (_categoriesBox!.values.contains(category)) return;
+    await _categoriesBox!.add(category);
+  }
 }
