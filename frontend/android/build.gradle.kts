@@ -1,0 +1,52 @@
+allprojects {
+    repositories {
+        // download.flutter.io 镜像（Flutter Android 产物）
+        maven { url = uri("https://mirrors.tuna.tsinghua.edu.cn/flutter/download.flutter.io") }
+        maven { url = uri("https://mirrors.cloud.tencent.com/flutter/download.flutter.io") }
+        // 阿里云
+        maven { url = uri("https://maven.aliyun.com/repository/google") }
+        maven { url = uri("https://maven.aliyun.com/repository/public") }
+        maven { url = uri("https://maven.aliyun.com/repository/gradle-plugin") }
+        // 腾讯云
+        maven { url = uri("https://mirrors.cloud.tencent.com/repository/maven/google") }
+        maven { url = uri("https://mirrors.cloud.tencent.com/repository/maven/public") }
+        maven { url = uri("https://mirrors.cloud.tencent.com/repository/maven/gradle-plugin") }
+        // 华为云
+        maven { url = uri("https://repo.huaweicloud.com/repository/maven/google") }
+        maven { url = uri("https://repo.huaweicloud.com/repository/maven/public") }
+        maven { url = uri("https://repo.huaweicloud.com/repository/maven/gradle-plugin") }
+        // 南京大学
+        maven { url = uri("https://maven.nju.edu.cn/repository/google") }
+        maven { url = uri("https://maven.nju.edu.cn/repository/public") }
+        maven { url = uri("https://maven.nju.edu.cn/repository/gradle-plugin") }
+        // 中科大
+        maven { url = uri("https://mirrors.ustc.edu.cn/repository/google") }
+        maven { url = uri("https://mirrors.ustc.edu.cn/repository/public") }
+        maven { url = uri("https://mirrors.ustc.edu.cn/repository/gradle-plugin") }
+        // 清华大学
+        maven { url = uri("https://mirrors.tuna.tsinghua.edu.cn/repository/google") }
+        maven { url = uri("https://mirrors.tuna.tsinghua.edu.cn/repository/public") }
+        maven { url = uri("https://mirrors.tuna.tsinghua.edu.cn/repository/gradle-plugin") }
+        // 官方源（备用）
+        google()
+        mavenCentral()
+    }
+}
+
+val newBuildDir: Directory =
+    rootProject.layout.buildDirectory
+        .dir("../../build")
+        .get()
+rootProject.layout.buildDirectory.value(newBuildDir)
+
+subprojects {
+    val newSubprojectBuildDir: Directory = newBuildDir.dir(project.name)
+    project.layout.buildDirectory.value(newSubprojectBuildDir)
+}
+subprojects {
+    project.evaluationDependsOn(":app")
+}
+
+tasks.register<Delete>("clean") {
+    delete(rootProject.layout.buildDirectory)
+}

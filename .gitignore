@@ -1,0 +1,64 @@
+# Miscellaneous
+*.class
+*.log
+*.pyc
+*.swp
+.DS_Store
+
+# Flutter/Dart specific
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+build/
+pubspec.lock
+
+# Android
+*.iml
+.gradle/
+local.properties
+android/app/*.png
+android/.gradle/
+android/build/
+
+# iOS
+*.pbxuser
+!default.pbxuser
+*.mode1v3
+!default.mode1v3
+*.mode2v3
+!default.mode2v3
+*.perspectivev3
+!default.perspectivev3
+xcuserdata
+ios/Pods/
+ios/.symlinks/
+
+# Linux
+linux/.cmake/
+linux/flutter/ephemeral/
+
+# macOS
+macos/Pods/
+macos/.symlinks/
+macos/Podfile.lock
+
+# Windows
+windows/flutter/ephemeral/
+
+# IDE
+.idea/
+*.ipr
+*.iws
+.vscode/
+*.iml
+
+# Env
+.env
+.env.local
+
+# Timewise specific
+*.hive
+*.hive.lock
